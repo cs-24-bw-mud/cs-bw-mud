@@ -64,7 +64,8 @@ def move(request):
 @api_view(["GET"])
 def get_rooms(request):
     rooms = Room.objects.all()
-    return JsonResponse({ 'rooms': rooms })
+    roomList = [(room.title, room.description, room.n_to, room.s_to, room.e_to, room.w_to, room.x, room.y) for room in rooms]
+    return JsonResponse({ 'rooms': roomList })
 
 
 @csrf_exempt
