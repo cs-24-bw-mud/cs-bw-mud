@@ -54,7 +54,7 @@ class World:
 
         # initialize with one step 
         steps = 1
-        # 1=N, 2=W, 3=S, 4=E
+
         traveling = 'n'
 
         # rnd(round) is one continous cycle without increasing steps
@@ -71,23 +71,18 @@ class World:
         room_num += 1
         previous_room = None
 
-        # x = position[0]
-        # y = position[1]
+        x = position[0]
+        y = position[1]
 
         while num_rooms > 0:
-            print(num_rooms)
             steps = rnd * 2
 
             while steps:
-                # this could be causing a bug
-                x = position[0]
-                y = position[1]
-
                 if traveling == 'n':
                     y += 1
 
                     # if wall, turn left
-                    if steps == (rnd / 2):
+                    if rnd == steps - 1:
                         traveling = 'w'
 
                     # create a room and pass in (x, y)
@@ -109,7 +104,7 @@ class World:
                     y -= 1
 
                     # if wall, turn left
-                    if steps == (rnd / 2):
+                    if rnd == steps - 1:
                         # 1: turn W
                         traveling = 'e'
 
@@ -137,21 +132,21 @@ class World:
                     # Save the room in the World grid
                     self.grid[y][x] = room
 
+                    # connect the new room to the previous room
+                    if previous_room is not None:
+                        previous_room.connect_rooms(room, traveling)
+
                     # update iterators
                     num_rooms -= 1
                     room_num += 1
                     previous_room = room
-
-                    # connect the new room to the previous room
-                    if previous_room is not None:
-                        previous_room.connect_rooms(room, traveling)
 
                     # change direction
                     if (steps - 1) == 0:
                         traveling = 'n'
 
                 elif traveling == 'w':
-                    x += 1
+                    x -= 1
 
                     # create a room and pass in (x, y)
                     room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}", x, y)
@@ -174,9 +169,9 @@ class World:
 
                 steps -= 1
 
-
             rnd += 1
             
+# test
 w = World()
 num_rooms = 21
 width = 12
