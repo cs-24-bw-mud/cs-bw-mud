@@ -16,5 +16,3 @@ def create_world():
   for p in players:
     p.currentRoom=r_outside.id
     p.save()
-
-  return w, players
