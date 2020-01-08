@@ -35,7 +35,8 @@ class World:
     rnd = 1
 
     # create room at center
-    room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}", start_x, start_y)
+    room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}")
+    room.addCoordinates(start_x, start_y)
     
     # Save the room in the World grid
     self.grid[start_y][start_x] = room
@@ -44,24 +45,24 @@ class World:
     # update iterators
     num_rooms -= 1
     room_num += 1
-    previous_room = None
+    previous_room = room
 
     x = position[0]
     y = position[1]
 
     while num_rooms > 0:
       steps = rnd * 2
+      print("-")
 
       while steps:
+        print("--")
         if traveling == 'n':
           y += 1
 
-          # if wall, turn left
-          if rnd == steps - 1:
-            traveling = 'w'
-
           # create a room and pass in (x, y)
-          room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}", x, y)
+          room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}")
+          room.addCoordinates(x, y)
+          room.connectRooms(previous_room, 's')
 
           # Save the room in the World grid
           self.grid[y][x] = room
@@ -69,7 +70,12 @@ class World:
 
           # connect the new room to the previous room
           if previous_room is not None:
+            print("***")
             previous_room.connectRooms(room, traveling)
+          
+          # if wall, turn left
+          if rnd == steps - 1:
+            traveling = 'w'
 
           # update iterators
           num_rooms -= 1
@@ -79,13 +85,10 @@ class World:
         elif traveling == 's':
           y -= 1
 
-          # if wall, turn left
-          if rnd == steps - 1:
-            # 1: turn W
-            traveling = 'e'
-
           # create a room and pass in (x, y)
-          room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}", x, y)
+          room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}")
+          room.addCoordinates(x, y)
+          room.connectRooms(previous_room, 'n')
 
           # Save the room in the World grid
           self.grid[y][x] = room
@@ -94,6 +97,11 @@ class World:
           # connect the new room to the previous room
           if previous_room is not None:
             previous_room.connectRooms(room, traveling)
+
+          # if wall, turn left
+          if rnd == steps - 1:
+            # 1: turn W
+            traveling = 'e'
 
           # update iterators
           num_rooms -= 1
@@ -104,7 +112,9 @@ class World:
           x += 1
 
           # create a room and pass in (x, y)
-          room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}", x, y)
+          room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}")
+          room.addCoordinates(x, y)
+          room.connectRooms(previous_room, 'w')
 
           # Save the room in the World grid
           self.grid[y][x] = room
@@ -113,21 +123,23 @@ class World:
           # connect the new room to the previous room
           if previous_room is not None:
             previous_room.connectRooms(room, traveling)
-
-          # update iterators
-          num_rooms -= 1
-          room_num += 1
-          previous_room = room
 
           # change direction
           if (steps - 1) == 0:
             traveling = 'n'
 
+          # update iterators
+          num_rooms -= 1
+          room_num += 1
+          previous_room = room
+
         elif traveling == 'w':
           x -= 1
 
           # create a room and pass in (x, y)
-          room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}", x, y)
+          room = Room(room_num, f"Room {room_num}", f"A generic description for room {room_num}")
+          room.addCoordinates(x, y)
+          room.connectRooms(previous_room, 'e')
 
           # Save the room in the World grid
           self.grid[y][x] = room
@@ -137,19 +149,18 @@ class World:
           if previous_room is not None:
             previous_room.connectRooms(room, traveling)
 
+          # change direction
+          if (steps - 1) == 0:
+            traveling = 's'
+
           # update iterators
           num_rooms -= 1
           room_num += 1
           previous_room = room
 
-          # change direction
-          if (steps - 1) == 0:
-            traveling = 's'
-
         steps -= 1
 
       rnd += 1
-
 
 
 def create_world():

@@ -14,6 +14,9 @@ class Room(models.Model):
     w_to = models.IntegerField(default=0)
     x = models.IntegerField(default=0)
     y = models.IntegerField(default=0)
+    def addCoordinates(self, x, y):
+        self.x = x
+        self.y = y
     def connectRooms(self, destinationRoom, direction):
         destinationRoomID = destinationRoom.id
         try:
