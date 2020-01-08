@@ -170,11 +170,3 @@ class World:
                 steps -= 1
 
             rnd += 1
-            
-# test
-w = World()
-num_rooms = 21
-width = 12
-height = 12
-w.generate_rooms(width, height, num_rooms)
-print(w.grid)
