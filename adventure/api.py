@@ -8,12 +8,6 @@ from .models import *
 from rest_framework.decorators import api_view
 import json
 
-# import sys
-# sys.path.append('../util')
-
-# from create_world import create_world
-# print(create_world)
-from temp.create_world import create_world
 
 # instantiate pusher
 # pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
@@ -66,10 +60,11 @@ def move(request):
         players = room.playerNames(player_id)
         return JsonResponse({'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players, 'error_msg':"You cannot move that way."}, safe=True)
 
-@api_view(["POST"])
-def init_world(request):
-    x = create_world()
-    return JsonResponse({ 'grid': x.grid, 'width': x.width, 'height': x.height })
+
+@api_view(["GET"])
+def get_rooms(request):
+    rooms = Room.objects.all()
+    return JsonResponse({ 'rooms': rooms })
 
 
 @csrf_exempt
