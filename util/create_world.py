@@ -171,5 +171,10 @@ def create_world():
   width = 50
   height = 50
   w.generate_rooms(width, height, num_rooms)
+
+  players=Player.objects.all()
+  for p in players:
+    p.currentRoom=0
+    p.save()
   
 create_world()
