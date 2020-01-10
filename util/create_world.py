@@ -52,10 +52,8 @@ class World:
 
     while num_rooms > 0:
       steps = rnd * 2
-      print("-")
 
       while steps:
-        print("--")
         if traveling == 'n':
           y += 1
 
@@ -70,7 +68,6 @@ class World:
 
           # connect the new room to the previous room
           if previous_room is not None:
-            print("***")
             previous_room.connectRooms(room, traveling)
           
           # if wall, turn left
