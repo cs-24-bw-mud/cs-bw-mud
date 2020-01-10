@@ -63,8 +63,9 @@ def move(request):
 
 @api_view(["GET"])
 def get_rooms(request):
-    rooms = Room.objects.all()
-    roomList = [(room.title, room.description, room.n_to, room.s_to, room.e_to, room.w_to, room.x, room.y) for room in rooms]
+    # rooms = Room.objects.all()
+    sorted_rooms = Room.objects.order_by('id')
+    roomList = [(room.title, room.description, room.n_to, room.s_to, room.e_to, room.w_to, room.x, room.y) for room in sorted_rooms]
     return JsonResponse({ 'rooms': roomList })
 
 
