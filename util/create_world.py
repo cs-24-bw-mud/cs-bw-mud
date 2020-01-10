@@ -24,7 +24,8 @@ class World:
     start_y = (size_x) // 2
 
     position = (start_x, start_y)
-    room_num = 0
+    # set first room
+    room_num = 1
 
     # initialize with one step 
     steps = 1
@@ -168,6 +169,10 @@ def create_world():
   width = 50
   height = 50
   w.generate_rooms(width, height, num_rooms)
+
+  # deleted the last room to make map symetrical
+  last=len(Room.objects.all())
+  Room.objects.filter(id=last-1).delete()
 
   players=Player.objects.all()
   for p in players:
